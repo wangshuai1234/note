@@ -2,7 +2,8 @@
     xmlns:jerry="http://schemas.android.com/apk/res/com.jerry.note"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/slidingmenu_bg">
 
     <com.jerry.note.view.SlidingMenu
         android:id="@+id/slidingMenu"

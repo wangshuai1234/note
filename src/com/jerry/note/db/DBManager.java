@@ -60,20 +60,67 @@ public class DBManager {
 			return true;
 		return false;
 	}
-	public List<Map<String,Note>>getAllNotes()
+	
+	public  List<Note>getAllNotes()
 	{
-		List<Map<String,Note>> list=new ArrayList<Map<String,Note>>();
-		String[] columns=null;
-		String selection=null;
-		String[] selectionArgs=null;
-		String groupBy="month_of_time";
-		String having=null;
-		String orderBy="create_time desc, month_of_time desc";
-		Cursor cursor = mDatabase.query("tbl_note", columns, selection, selectionArgs, groupBy, having, orderBy);
+		List<Note>notes=new ArrayList<Note>();
+		String sql="select * from tbl_note order by month_of_time desc;";
+		Cursor cursor = mDatabase.rawQuery(sql, null);
 		while(cursor.moveToNext())
 		{
-			Map<String, Note>item=new HashMap<String, Note>();
+			Note note=new Note();
+			int id = cursor.getInt(cursor.getColumnIndex("id"));
+			String title = cursor.getString(cursor.getColumnIndex("title"));
+			String content = cursor.getString(cursor.getColumnIndex("content"));
+			String createTime = cursor.getString(cursor.getColumnIndex("create_time"));
+			String lastEditTime = cursor.getString(cursor.getColumnIndex("last_edit_time"));
+			String type = cursor.getString(cursor.getColumnIndex("type"));
+			String monthOfTime = cursor.getString(cursor.getColumnIndex("month_of_time"));
+			note.setId(id);
+			note.setContent(content);
+			note.setTitle(title);
+			note.setType(type);
+			note.setCreateTime(createTime);
+			note.setLastModifyTime(lastEditTime);
+			note.setMonthOfTime(monthOfTime);
+			notes.add(note);
 		}
-		return null;
+		return notes;
+	}
+
+	public List<Map<String,String>>findNoteCount()
+	{
+		List<Map<String,String>> info=null;
+		String sql="select month_of_time,count(*) as notecount from tbl_note  group by month_of_time order by month_of_time desc;";
+		Cursor cursor=mDatabase.rawQuery(sql,null);
+		info =new ArrayList<Map<String,String>>();
+		while(cursor.moveToNext())
+		{
+			Map<String,String> node=new HashMap<String, String>();
+			node.put("monthoftime", cursor.getString(cursor.getColumnIndex("month_of_time")));
+			node.put("notecount", cursor.getString(cursor.getColumnIndex("notecount")));
+			info.add(node);
+		}
+		return info;
+	}
+
+	public List<Note> findNotesByTime(String monthoftime) {
+		// TODO Auto-generated method stub
+		List<Note>  notes=null;
+		Cursor cursor=mDatabase.query("tbl_note", null, "month_of_time =? ", new String[]{monthoftime}, null, null, "create_time desc");
+		notes =new ArrayList<Note>();
+		while(cursor.moveToNext())
+		{
+			Note note=new Note();
+			note.setId(cursor.getInt(cursor.getColumnIndex("id")));
+			note.setTitle(cursor.getString(cursor.getColumnIndex("content")));
+			note.setCreateTime(cursor.getString(cursor.getColumnIndex("create_time")));
+			note.setLastModifyTime(cursor.getString(cursor.getColumnIndex("last_edit_time")));
+			note.setMonthOfTime(cursor.getString(cursor.getColumnIndex("month_of_time")));
+			note.setContent(cursor.getString(cursor.getColumnIndex("title")));
+			note.setTitle(cursor.getString(cursor.getColumnIndex("type")));
+			notes.add(note);
+		}
+		return notes;
 	}
 }
