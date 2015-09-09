@@ -66,12 +66,6 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 		adapter.notifyDataSetChanged();
 	}
-	public void onNewNoteClick(View view)
-	{
-		Log.i("onNewNoteClick", "onNewNoteClick");
-		Intent intent=new Intent(this, NewNoteActivity.class);
-		startActivity(intent);
-	}
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub

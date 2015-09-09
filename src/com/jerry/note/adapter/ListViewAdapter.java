@@ -1,15 +1,19 @@
 package com.jerry.note.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.jerry.note.DetailNoteActivity;
 import com.jerry.note.R;
 import com.jerry.note.bean.Note;
 import com.jerry.note.db.DBManager;
 
 
 import android.content.Context;
+import android.content.Intent;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,6 +33,7 @@ public class ListViewAdapter extends BaseAdapter {
 	private LayoutInflater mInflater; 
 	private Context mContext;
 	private List<Map<String, String>> mList;
+	private List<List<Note>>mNotes;
 	private DBManager dbManager;
 	public ListViewAdapter(Context context, List<Map<String, String>> list,DBManager dbManager)
 	{
@@ -36,6 +41,7 @@ public class ListViewAdapter extends BaseAdapter {
 		this.mList = list;
 		this.mInflater = LayoutInflater.from(mContext); 
 		this.dbManager=dbManager;
+		mNotes=new ArrayList<List<Note>>();
 	}
 
 	@Override
@@ -90,7 +96,7 @@ public class ListViewAdapter extends BaseAdapter {
 		holder.gridView.setVerticalSpacing(10);
 		
 		List<Note> gridViewList=dbManager.findNotesByTime((String)item.get("monthoftime"));
-		
+		mNotes.add(gridViewList);
 		GridViewAdapter adapter=new GridViewAdapter(mContext, gridViewList);
 		holder.gridView.setAdapter(adapter);
 		holder.gridView.setOnItemClickListener(new MyOnItemClickListener(position) );
@@ -110,7 +116,7 @@ public class ListViewAdapter extends BaseAdapter {
 		@Override
 		public boolean onItemLongClick(AdapterView<?> adapterView, View view,
 				int position, long id) {
-			Log.i("onItemLongClick", "position"+dataPosition);
+			Log.i("onItemLongClick", "dataPosition="+dataPosition+";postion"+position);
 			return true;
 		}
 	}
@@ -125,7 +131,13 @@ public class ListViewAdapter extends BaseAdapter {
 		public void onItemClick(AdapterView<?> adapterView, View view, int position,
 				long id) {
 			// TODO Auto-generated method stub
-			Log.i("onItemClick", "position"+dataPosition);
+			Log.i("onItemClick", "dataPosition="+dataPosition+";postion"+position);
+			Intent intent=new Intent(mContext, DetailNoteActivity.class);
+			Bundle bundle=new Bundle();
+			Note note=mNotes.get(dataPosition).get(position);
+			bundle.putSerializable("note", note);
+			intent.putExtras(bundle);
+			mContext.startActivity(intent);
 		}
 
 	}
