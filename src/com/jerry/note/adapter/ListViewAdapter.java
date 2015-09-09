@@ -10,7 +10,11 @@ import com.jerry.note.bean.Note;
 import com.jerry.note.db.DBManager;
 
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -24,23 +28,31 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import android.widget.TextView;
 
 
 public class ListViewAdapter extends BaseAdapter {
 
+	public interface RefreshCallBack{
+		void refresh();
+	}
 	private LayoutInflater mInflater; 
 	private Context mContext;
 	private List<Map<String, String>> mList;
 	private List<List<Note>>mNotes;
 	private DBManager dbManager;
-	public ListViewAdapter(Context context, List<Map<String, String>> list,DBManager dbManager)
+	private String []items={"É¾³ý"};
+	private RefreshCallBack callBack;
+	
+	public ListViewAdapter(Context context, List<Map<String, String>> list,DBManager dbManager,RefreshCallBack callBack )
 	{
 		this.mContext = context;
 		this.mList = list;
 		this.mInflater = LayoutInflater.from(mContext); 
 		this.dbManager=dbManager;
+		this.callBack=callBack;
 		mNotes=new ArrayList<List<Note>>();
 	}
 
@@ -115,8 +127,27 @@ public class ListViewAdapter extends BaseAdapter {
 		}
 		@Override
 		public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-				int position, long id) {
+				final int position, long id) {
 			Log.i("onItemLongClick", "dataPosition="+dataPosition+";postion"+position);
+			AlertDialog.Builder builder=new Builder(mContext);
+			builder.setItems(items, new OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					Note note=mNotes.get(dataPosition).get(position);
+					boolean result = dbManager.deleteNotes(note.getId());
+					if(result)
+					{
+						Toast.makeText(mContext, "É¾³ý³É¹¦", Toast.LENGTH_SHORT).show();
+						callBack.refresh();
+					}
+					else
+					{
+						Toast.makeText(mContext, "É¾³ýÊ§°Ü", Toast.LENGTH_SHORT).show();
+					}
+				}
+			}).show();
 			return true;
 		}
 	}
@@ -147,5 +178,11 @@ public class ListViewAdapter extends BaseAdapter {
 		public TextView txtTime;
 		public TextView txtCount;
 		public GridView gridView;
+	}
+	@Override
+	public void notifyDataSetChanged() {
+		// TODO Auto-generated method stub
+		super.notifyDataSetChanged();
+		mNotes.clear();
 	}
 }

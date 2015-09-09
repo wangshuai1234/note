@@ -103,7 +103,14 @@ public class DBManager {
 		}
 		return info;
 	}
-
+	public boolean deleteNotes(int id)
+	{
+		int i=mDatabase.delete("tbl_note", "id=?", new String[]{String.valueOf(id)});
+		if(i>=0)
+			return true;
+		return false;
+	}
+	
 	public List<Note> findNotesByTime(String monthoftime) {
 		// TODO Auto-generated method stub
 		List<Note>  notes=null;
@@ -113,12 +120,12 @@ public class DBManager {
 		{
 			Note note=new Note();
 			note.setId(cursor.getInt(cursor.getColumnIndex("id")));
-			note.setTitle(cursor.getString(cursor.getColumnIndex("content")));
+			note.setTitle(cursor.getString(cursor.getColumnIndex("title")));
 			note.setCreateTime(cursor.getString(cursor.getColumnIndex("create_time")));
 			note.setLastModifyTime(cursor.getString(cursor.getColumnIndex("last_edit_time")));
 			note.setMonthOfTime(cursor.getString(cursor.getColumnIndex("month_of_time")));
-			note.setContent(cursor.getString(cursor.getColumnIndex("title")));
-			note.setTitle(cursor.getString(cursor.getColumnIndex("type")));
+			note.setContent(cursor.getString(cursor.getColumnIndex("content")));
+			note.setType(cursor.getString(cursor.getColumnIndex("type")));
 			notes.add(note);
 		}
 		return notes;
