@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jerry.note.adapter.ListViewAdapter;
+import com.jerry.note.adapter.ListViewAdapter.RefreshCallBack;
 import com.jerry.note.db.DBManager;
 
 import android.app.Activity;
@@ -39,7 +40,14 @@ public class MainActivity extends Activity implements OnClickListener{
 		newNote=findViewById(R.id.id_new_note);
 		noNote=findViewById(R.id.id_no_note);
 		newNote.setOnClickListener(this);
-		adapter=new ListViewAdapter(this, data, manager);
+		adapter=new ListViewAdapter(this, data, manager,new RefreshCallBack() {
+			
+			@Override
+			public void refresh() {
+				// TODO Auto-generated method stub
+				refreshData();
+			}
+		});
 		listView.setAdapter(adapter);
 		
 	}
@@ -53,6 +61,9 @@ public class MainActivity extends Activity implements OnClickListener{
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
+		refreshData();
+	}
+	private void refreshData() {
 		data.clear();
 		List<Map<String, String>> tmp = manager.findNoteCount();
 		data.addAll(tmp);

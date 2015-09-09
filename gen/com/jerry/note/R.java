@@ -41,18 +41,23 @@ containing a value of this type.
         public static final int gridview_title_fontsize=0x7f040008;
     }
     public static final class drawable {
-        public static final int corner=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int slidingmenu_bg=0x7f020002;
+        public static final int arrow_left=0x7f020000;
+        public static final int corner=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int icon_write_notice=0x7f020003;
+        public static final int slidingmenu_bg=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f080012;
+        public static final int action_settings=0x7f080015;
         public static final int contents=0x7f080003;
+        public static final int id_back=0x7f080012;
+        public static final int id_edit=0x7f080014;
         public static final int id_gallery=0x7f080007;
         public static final int id_grid_note=0x7f08000e;
         public static final int id_list_note=0x7f080010;
         public static final int id_new_note=0x7f08000f;
         public static final int id_no_note=0x7f080011;
+        public static final int id_title=0x7f080013;
         public static final int itemLayOut=0x7f080008;
         public static final int newContent=0x7f080006;
         public static final int newTitle=0x7f080005;
@@ -90,8 +95,10 @@ containing a value of this type.
         public static final int _s_1=0x7f050005;
         public static final int action_settings=0x7f050002;
         public static final int app_name=0x7f050000;
+        public static final int back=0x7f05000b;
         public static final int hello_world=0x7f050001;
         public static final int new_note=0x7f050007;
+        public static final int override=0x7f05000c;
         public static final int tip=0x7f05000a;
     }
     public static final class style {

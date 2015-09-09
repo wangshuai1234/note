@@ -12,5 +12,7 @@
     <string name="TitleString">" 标题"</string>
     <string name="ContentString">内容</string>
     <string name="tip">暂无笔记</string>
+    <string name="back">back</string>
+    <string name="override">笔记概览</string>
 
 </resources>
